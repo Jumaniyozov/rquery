@@ -1,19 +1,26 @@
-import { useParams } from "react-router-dom";
-import { IssueHeader, useIssueData } from "./IssueData.jsx";
 import { useQuery } from "react-query";
-import { useUserData } from "../helpers/useUserData.js";
-import { relativeDate } from "../helpers/relativeDate.js";
+import { useParams } from "react-router-dom";
+import { relativeDate } from "../helpers/relativeDate";
+import { useUserData } from "../helpers/useUserData";
+import { IssueHeader } from "./IssueHeader";
 
-const useIssueComments = (issueNumber) => {
+function useIssueData(issueNumber) {
+  return useQuery(["issues", issueNumber], () => {
+    return fetch(`/api/issues/${issueNumber}`).then((res) => res.json());
+  });
+}
+
+function useIssueComments(issueNumber) {
   return useQuery(["issues", issueNumber, "comments"], () => {
     return fetch(`/api/issues/${issueNumber}/comments`).then((res) =>
       res.json()
     );
   });
-};
+}
 
-const Comment = ({ comment, createdBy, createdDate }) => {
+function Comment({ comment, createdBy, createdDate }) {
   const userQuery = useUserData(createdBy);
+
   if (userQuery.isLoading)
     return (
       <div className="comment">
@@ -35,7 +42,7 @@ const Comment = ({ comment, createdBy, createdDate }) => {
       </div>
     </div>
   );
-};
+}
 
 export default function IssueDetails() {
   const { number } = useParams();
@@ -43,7 +50,7 @@ export default function IssueDetails() {
   const commentsQuery = useIssueComments(number);
 
   return (
-    <h1 className="issue-details">
+    <div className="issue-details">
       {issueQuery.isLoading ? (
         <p>Loading issue...</p>
       ) : (
@@ -60,9 +67,10 @@ export default function IssueDetails() {
                 ))
               )}
             </section>
+            <aside></aside>
           </main>
         </>
       )}
-    </h1>
+    </div>
   );
 }

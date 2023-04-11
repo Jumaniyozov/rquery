@@ -1,7 +1,7 @@
+import IssuesList from "../components/IssuesList";
+import LabelList from "../components/LabelList";
 import { useState } from "react";
-import {StatusSelect} from "../components/StatusSelect.jsx";
-import LabelList from "../components/LabelList.jsx";
-import IssuesList from "../components/IssuesList.jsx";
+import { StatusSelect } from "../components/StatusSelect";
 
 export default function Issues() {
   const [labels, setLabels] = useState([]);
@@ -10,17 +10,18 @@ export default function Issues() {
     <div>
       <main>
         <section>
-          <h1>Issues</h1>
           <IssuesList labels={labels} status={status} />
         </section>
         <aside>
           <LabelList
             selected={labels}
             toggle={(label) =>
-              setLabels((current) =>
-                current.includes(label)
-                  ? current.filter((currentLabel) => currentLabel !== label)
-                  : current.concat(label)
+              setLabels((currentLabels) =>
+                currentLabels.includes(label)
+                  ? currentLabels.filter(
+                      (currentLabel) => currentLabel !== label
+                    )
+                  : currentLabels.concat(label)
               )
             }
           />

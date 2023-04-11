@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOMClient from "react-dom/client";
+import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
@@ -7,8 +7,6 @@ import { worker } from "@uidotdev/react-query-api";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
-const container = document.getElementById("root");
-const root = ReactDOMClient.createRoot(container);
 
 new Promise((res) => setTimeout(res, 100))
   .then(() =>
@@ -18,7 +16,7 @@ new Promise((res) => setTimeout(res, 100))
     })
   )
   .then(() => {
-    root.render(
+    ReactDOM.render(
       <React.StrictMode>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
@@ -27,6 +25,7 @@ new Promise((res) => setTimeout(res, 100))
             </div>
           </BrowserRouter>
         </QueryClientProvider>
-      </React.StrictMode>
+      </React.StrictMode>,
+      document.getElementById("root")
     );
   });

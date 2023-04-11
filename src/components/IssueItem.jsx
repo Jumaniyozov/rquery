@@ -4,7 +4,7 @@ import { relativeDate } from "../helpers/relativeDate";
 import { useUserData } from "../helpers/useUserData";
 import { Label } from "./Label";
 
-export const IssueItem = ({
+export function IssueItem({
   title,
   number,
   assignee,
@@ -13,10 +13,9 @@ export const IssueItem = ({
   createdDate,
   labels,
   status,
-}) => {
+}) {
   const assigneeUser = useUserData(assignee);
   const createdByUser = useUserData(createdBy);
-
   return (
     <li>
       <div>
@@ -35,7 +34,7 @@ export const IssueItem = ({
         </span>
         <small>
           #{number} opened {relativeDate(createdDate)}{" "}
-          {createdByUser.isSuccess ? `by ${createdByUser.data.name}` : null}
+          {createdByUser.isSuccess ? `by ${createdByUser.data.name}` : ""}
         </small>
       </div>
       {assignee ? (
@@ -59,4 +58,4 @@ export const IssueItem = ({
       </span>
     </li>
   );
-};
+}

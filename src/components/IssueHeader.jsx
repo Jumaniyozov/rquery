@@ -1,27 +1,19 @@
-import { useQuery } from "react-query";
-import { possibleStatus } from "../helpers/defaultData.js";
-import { useUserData } from "../helpers/useUserData.js";
-import { GoIssueClosed, GoIssueOpened } from "react-icons/go";
-import { relativeDate } from "../helpers/relativeDate.js";
+import { GoIssueOpened, GoIssueClosed } from "react-icons/go";
+import { possibleStatus } from "../helpers/defaultData";
+import { useUserData } from "../helpers/useUserData";
+import { relativeDate } from "../helpers/relativeDate";
 
-export const useIssueData = (issueNumber) => {
-  const issueData = useQuery(["issues", issueNumber], () => {
-    return fetch(`/api/issues/${issueNumber}`).then((res) => res.json());
-  });
-
-  return issueData;
-};
 export const IssueHeader = ({
   title,
   number,
+  status = "todo",
   createdBy,
   createdDate,
   comments,
-  status = "todo",
 }) => {
   const statusObject = possibleStatus.find((pstatus) => pstatus.id === status);
-  const createdUser = useUserData(createdBy);
 
+  const createdUser = useUserData(createdBy);
   return (
     <header>
       <h2>
@@ -41,9 +33,9 @@ export const IssueHeader = ({
           {statusObject.label}
         </span>
         <span className="created-by">
-          {createdUser.isLoading ? <p>Loading...</p> : createdUser.data?.name}
+          {createdUser.isLoading ? "..." : createdUser.data?.name}
         </span>{" "}
-        opened this issue {relativeDate(createdDate)} | {comments.length}{" "}
+        opened this issue {relativeDate(createdDate)} · {comments.length}{" "}
         comments
       </div>
     </header>
